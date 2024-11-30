@@ -5,11 +5,13 @@ TARGET_ARCHS=("arm64")
 
 CURL_VERSION="7.64.1"
 OPENSSL_VERSION="3.4.0"
+GMP_VERSION="6.3.0"
 
 ROOT_DIR=$(pwd)
 WORKER=$(getconf _NPROCESSORS_ONLN)
 BUILD_DIR_CURL="build/android/curl"
 BUILD_DIR_OPENSSL="build/android/openssl"
+BUILD_DIR_GMP="build/android/gmp"
 LOG_FILE="$ROOT_DIR/$BUILD_DIR_OPENSSL/build.log"
 
 COLOR_GREEN="\033[38;5;48m"
@@ -299,5 +301,125 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
 done
 
 echo -e "${COLOR_GREEN}curl built successfully for all ARCH targets.${COLOR_END}"
+
+# gmp
+cd "$ROOT_DIR" || exit 1
+
+LOG_FILE="$ROOT_DIR/$BUILD_DIR_GMP/build.log"
+
+if [ -d "$BUILD_DIR_GMP/tar" ]; then
+  rm -rf "$BUILD_DIR_GMP/tar"
+fi
+if [ -d "$BUILD_DIR_GMP/src" ]; then
+  rm -rf "$BUILD_DIR_GMP/src"
+fi
+if [ -d "$BUILD_DIR_GMP/install" ]; then
+  rm -rf "$BUILD_DIR_GMP/install"
+fi
+
+if [ -f "$LOG_FILE" ]; then
+    rm "$LOG_FILE"
+    touch "$LOG_FILE"
+fi
+
+mkdir -p "$BUILD_DIR_GMP/tar"
+mkdir -p "$BUILD_DIR_GMP/src"
+mkdir -p "$BUILD_DIR_GMP/install"
+
 cd "$ROOT_DIR"
+echo "Downloading GMP..."
+curl -Lo "$BUILD_DIR_GMP/tar/gmp-$GMP_VERSION.tar.gz" "https://gmplib.org/download/gmp/gmp-$GMP_VERSION.tar.gz" >> "$LOG_FILE" 2>&1 || fail "Error Downloading gmp"
+echo "Uncompressing GMP..."
+tar xzf "$BUILD_DIR_GMP/tar/gmp-$GMP_VERSION.tar.gz" -C "$BUILD_DIR_GMP/src" || fail "Error Uncompressing GMP"
+cd "$BUILD_DIR_GMP/src/gmp-$GMP_VERSION"
+
+for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
+    echo "Building GMP for $CURRENT_ARCH build..."
+
+    make clean 1>& /dev/null || true
+
+    echo "-> Configuring GMP for $CURRENT_ARCH build..."
+    case $CURRENT_ARCH in
+        armv7)
+            export HOST="arm-linux-androideabi"
+
+            export CC="armv7a-linux-androideabi16-clang"
+            export CXX="armv7a-linux-androideabi16-clang++"
+            export AR="arm-linux-androideabi-ar"
+            export AS="arm-linux-androideabi-as"
+            export LD="arm-linux-androideabi-ld"
+            export RANLIB="arm-linux-androideabi-ranlib"
+            export NM="arm-linux-androideabi-nm"
+            export STRIP="arm-linux-androideabi-strip"
+
+            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -Wl,--fix-cortex-a8 -fPIC -DANDROID -D__ANDROID_API__=16 -Os"
+            export CPPFLAGS="$CFLAGS"
+            export CXXFLAGS="$CFLAGS -fno-exceptions -fno-rtti"
+            export LDFLAGS="-Wl,--fix-cortex-a8"
+        ;;
+        arm64)
+            export HOST="aarch64-linux-android"
+
+            export CC="x86_64-linux-android21-clang"
+            export CXX="x86_64-linux-android21-clang++"
+            export AR="llvm-ar"
+            export AS="$CC"
+            export LD="ld"
+            export RANLIB="llvm-ranlib"
+            export NM="nm"
+            export STRIP="llvm-strip"
+
+            ./configure --host=$HOST --enable-assembly=no >> "$LOG_FILE" 2>&1 || fail "-> Error Configuring GMP for $CURRENT_ARCH"
+        ;;
+        x86)
+            export HOST="i686-linux-android"
+
+            export CC="i686-linux-android16-clang"
+            export CXX="i686-linux-android16-clang++"
+            export AR="i686-linux-android-ar"
+            export AS="i686-linux-android-as"
+            export LD="i686-linux-android-ld"
+            export RANLIB="i686-linux-android-ranlib"
+            export NM="i686-linux-android-nm"
+            export STRIP="i686-linux-android-strip"
+
+            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -mtune=intel -mssse3 -mfpmath=sse -m32 -DANDROID -D__ANDROID_API__=16 -Os"
+            export CPPFLAGS="$CFLAGS"
+            export CXXFLAGS="$CFLAGS -fno-exceptions -fno-rtti"
+            export LDFLAGS=""
+        ;;
+        x86_64)
+            export HOST="x86_64-linux-android"
+
+            export CC="x86_64-linux-android21-clang"
+            export CXX="x86_64-linux-android21-clang++"
+            export AR="x86_64-linux-android-ar"
+            export AS="x86_64-linux-android-as"
+            export LD="x86_64-linux-android-ld"
+            export RANLIB="x86_64-linux-android-ranlib"
+            export NM="x86_64-linux-android-nm"
+            export STRIP="x86_64-linux-android-strip"
+
+            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -mtune=intel -mssse3 -mfpmath=sse -m64 -DANDROID -D__ANDROID_API__=21 -Os"
+            export CPPFLAGS="$CFLAGS"
+            export CXXFLAGS="$CFLAGS -fno-exceptions -fno-rtti"
+            export LDFLAGS=""
+        ;;
+    esac
+
+    # sed -i '' -e 's~#define HAVE_STRDUP~//#define HAVE_STRDUP~g' configure
+    echo "-> Configured GMP for $CURRENT_ARCH"
+
+    echo "-> Compiling GMP for $CURRENT_ARCH..."
+    make -j "$WORKER" >> "$LOG_FILE" 2>&1 || fail "-> Error Compiling GMP for $CURRENT_ARCH"
+    echo "-> Compiled GMP for $CURRENT_ARCH"
+
+    echo "-> Installing GMP for $CURRENT_ARCH to $ROOT_DIR/$BUILD_DIR_GMP/install/gmp/$CURRENT_ARCH..."
+    make install DESTDIR="$ROOT_DIR/$BUILD_DIR_GMP/install/gmp/$CURRENT_ARCH" >> "$LOG_FILE" 2>&1 || fail "-> Error Installing GMP for $CURRENT_ARCH"
+    echo "-> Installed GMP for $CURRENT_ARCH"
+
+    echo "Successfully built GMP for $CURRENT_ARCH"
+done
+
+echo -e "${COLOR_GREEN}gmp built successfully for all ARCH targets.${COLOR_END}"
 exit 0
