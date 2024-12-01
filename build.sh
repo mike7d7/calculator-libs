@@ -468,11 +468,11 @@ tar xzf "$BUILD_DIR_MPFR/tar/mpfr-$MPFR_VERSION.tar.gz" -C "$BUILD_DIR_MPFR/src"
 cd "$BUILD_DIR_MPFR/src/mpfr-$MPFR_VERSION"
 
 for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
-    echo "Building GMP for $CURRENT_ARCH build..."
+    echo "Building MPFR for $CURRENT_ARCH build..."
 
     make clean 1>& /dev/null || true
 
-    echo "-> Configuring GMP for $CURRENT_ARCH build..."
+    echo "-> Configuring MPFR for $CURRENT_ARCH build..."
     case $CURRENT_ARCH in
         armv7)
             export HOST="arm-linux-androideabi"
