@@ -380,9 +380,9 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
             export STRIP="llvm-strip"
 
             export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -DANDROID -D__ANDROID_API__=21 -Os"
-            export CPPFLAGS="$CFLAGS"
+            export CPPFLAGS="$CFLAGS -fno-exceptions -fno-rtti"
 
-            ./configure --host=$HOST --enable-assembly=no >> "$LOG_FILE" 2>&1 || fail "-> Error Configuring GMP for $CURRENT_ARCH"
+            ./configure --host=$HOST --enable-assembly=no --with-sysroot="$ANDROID_TOOLCHAIN/sysroot -fPIC -DANDROID -D__ANDROID_API__=21 -Os fuse-ld=$ANDROID_TOOLCHAIN/bin/ld" >> "$LOG_FILE" 2>&1 || fail "-> Error Configuring GMP for $CURRENT_ARCH"
         ;;
         x86)
             export HOST="i686-linux-android"
