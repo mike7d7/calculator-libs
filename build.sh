@@ -96,8 +96,8 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
             ./Configure android-arm no-ssl2 no-ssl3 no-comp no-hw no-engine no-shared no-tests no-ui no-deprecated zlib -Wl,--fix-cortex-a8 -fPIC -DANDROID -D__ANDROID_API__=16 -Os -fuse-ld="$ANDROID_TOOLCHAIN/bin/arm-linux-androideabi-ld" >> "$LOG_FILE" 2>&1 || fail "-> Error Configuring OpenSSL for $CURRENT_ARCH"
         ;;
         arm64)
-            export CC="x86_64-linux-android21-clang"
-            export CXX="x86_64-linux-android21-clang++"
+            export CC="aarch64-linux-android21-clang"
+            export CXX="aarch64-linux-android21-clang++"
             export AR="llvm-ar"
             export AS="$CC"
             export LD="ld"
@@ -206,13 +206,13 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
         arm64)
             export HOST="aarch64-linux-android"
 
-            export CC="x86_64-linux-android21-clang"
-            export CXX="x86_64-linux-android21-clang++"
+            export CC="aarch64-linux-android21-clang"
+            export CXX="aarch64-linux-android21-clang++"
             export AR="llvm-ar"
             export AS="$CC"
             export LD="ld"
             export RANLIB="llvm-ranlib"
-            export NM="x86_64-linux-android-nm"
+            export NM="aarch64-linux-android-nm"
             export STRIP="llvm-strip"
 
             export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -DANDROID -D__ANDROID_API__=21 -Os"
@@ -249,7 +249,7 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
             export NM="x86_64-linux-android-nm"
             export STRIP="x86_64-linux-android-strip"
 
-            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -mtune=intel -mssse3 -mfpmath=sse -m64 -DANDROID -D__ANDROID_API__=21 -Os"
+            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -mssse3 -mfpmath=sse -m64 -DANDROID -D__ANDROID_API__=21 -Os"
             export CPPFLAGS="$CFLAGS"
             export CXXFLAGS="$CFLAGS -fno-exceptions -fno-rtti"
             export LDFLAGS=""
@@ -370,14 +370,17 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
         arm64)
             export HOST="aarch64-linux-android"
 
-            export CC="x86_64-linux-android21-clang"
-            export CXX="x86_64-linux-android21-clang++"
+            export CC="aarch64-linux-android21-clang"
+            export CXX="aarch64-linux-android21-clang++"
             export AR="llvm-ar"
             export AS="$CC"
             export LD="ld"
             export RANLIB="llvm-ranlib"
             export NM="nm"
             export STRIP="llvm-strip"
+
+            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -DANDROID -D__ANDROID_API__=21 -Os"
+            export CPPFLAGS="$CFLAGS"
 
             ./configure --host=$HOST --enable-assembly=no >> "$LOG_FILE" 2>&1 || fail "-> Error Configuring GMP for $CURRENT_ARCH"
         ;;
@@ -491,14 +494,17 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
         arm64)
             export HOST="aarch64-linux-android"
 
-            export CC="x86_64-linux-android21-clang"
-            export CXX="x86_64-linux-android21-clang++"
+            export CC="aarch64-linux-android21-clang"
+            export CXX="aarch64-linux-android21-clang++"
             export AR="llvm-ar"
             export AS="$CC"
             export LD="ld"
             export RANLIB="llvm-ranlib"
             export NM="nm"
             export STRIP="llvm-strip"
+
+            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -DANDROID -D__ANDROID_API__=21 -Os"
+            export CPPFLAGS="$CFLAGS"
 
             ./configure --host=$HOST --with-gmp="$ROOT_DIR/$BUILD_DIR_GMP/install/gmp/$CURRENT_ARCH/usr/local" >> "$LOG_FILE" 2>&1 || fail "-> Error Configuring GMP for $CURRENT_ARCH"
         ;;
@@ -614,14 +620,17 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
         arm64)
             export HOST="aarch64-linux-android"
 
-            export CC="x86_64-linux-android21-clang"
-            export CXX="x86_64-linux-android21-clang++"
+            export CC="aarch64-linux-android21-clang"
+            export CXX="aarch64-linux-android21-clang++"
             export AR="llvm-ar"
             export AS="$CC"
             export LD="ld"
             export RANLIB="llvm-ranlib"
             export NM="nm"
             export STRIP="llvm-strip"
+
+            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -DANDROID -D__ANDROID_API__=21 -Os"
+            export CPPFLAGS="$CFLAGS"
 
             ./configure --host=$HOST >> "$LOG_FILE" 2>&1 || fail "-> Error Configuring XZ for $CURRENT_ARCH"
         ;;
@@ -735,14 +744,17 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
         arm64)
             export HOST="aarch64-linux-android"
 
-            export CC="x86_64-linux-android21-clang"
-            export CXX="x86_64-linux-android21-clang++"
+            export CC="aarch64-linux-android21-clang"
+            export CXX="aarch64-linux-android21-clang++"
             export AR="llvm-ar"
             export AS="$CC"
             export LD="ld"
             export RANLIB="llvm-ranlib"
             export NM="nm"
             export STRIP="llvm-strip"
+
+            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -DANDROID -D__ANDROID_API__=21 -Os"
+            export CPPFLAGS="$CFLAGS"
 
             ./configure --host=$HOST >> "$LOG_FILE" 2>&1 || fail "-> Error Configuring ICONV for $CURRENT_ARCH"
         ;;
@@ -856,14 +868,17 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
         arm64)
             export HOST="aarch64-linux-android"
 
-            export CC="x86_64-linux-android21-clang"
-            export CXX="x86_64-linux-android21-clang++"
+            export CC="aarch64-linux-android21-clang"
+            export CXX="aarch64-linux-android21-clang++"
             export AR="llvm-ar"
             export AS="$CC"
             export LD="ld"
             export RANLIB="llvm-ranlib"
             export NM="nm"
             export STRIP="llvm-strip"
+
+            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -DANDROID -D__ANDROID_API__=21 -Os"
+            export CPPFLAGS="$CFLAGS"
 
             ./autogen.sh --host=$HOST --enable-static --without-python --with-lzma="$ROOT_DIR/$BUILD_DIR_XZ/install/xz/$CURRENT_ARCH/usr/local" >> "$LOG_FILE" 2>&1 || fail "-> Error Configuring XML2 for $CURRENT_ARCH"
         ;;
@@ -978,8 +993,8 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
         arm64)
             export HOST="aarch64-linux-android"
 
-            export CC="x86_64-linux-android21-clang"
-            export CXX="x86_64-linux-android21-clang++"
+            export CC="aarch64-linux-android21-clang"
+            export CXX="aarch64-linux-android21-clang++"
             export AR="llvm-ar"
             export AS="$CC"
             export LD="ld"
@@ -987,7 +1002,9 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
             export NM="nm"
             export STRIP="llvm-strip"
 
-            export CPPFLAGS="-I$ROOT_DIR/$BUILD_DIR_GMP/install/gmp/arm64/usr/local/include -I$ROOT_DIR/$BUILD_DIR_MPFR/install/mpfr/arm64/usr/local/include -I$ROOT_DIR/$BUILD_DIR_ICONV/install/iconv/arm64/usr/local/include"
+            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -DANDROID -D__ANDROID_API__=21 -Os"
+
+            export CPPFLAGS="-I$ROOT_DIR/$BUILD_DIR_GMP/install/gmp/arm64/usr/local/include -I$ROOT_DIR/$BUILD_DIR_MPFR/install/mpfr/arm64/usr/local/include -I$ROOT_DIR/$BUILD_DIR_ICONV/install/iconv/arm64/usr/local/include $CFLAGS"
             export LDFLAGS="-L$ROOT_DIR/$BUILD_DIR_GMP/install/gmp/arm64/usr/local/lib  -L$ROOT_DIR/$BUILD_DIR_MPFR/install/mpfr/arm64/usr/local/lib -L$ROOT_DIR/$BUILD_DIR_ICONV/install/iconv/arm64/usr/local/lib -Wl,--allow-shlib-undefined"
             QALCULATE_LIBXML_CFLAGS="-I$ROOT_DIR/$BUILD_DIR_XML2/install/xml2/arm64/usr/local/include/libxml2"
             QALCULATE_LIBXML_LIBS="-L$ROOT_DIR/$BUILD_DIR_XML2/install/xml2/arm64/usr/local/lib"
