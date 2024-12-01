@@ -547,6 +547,8 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
 
     echo "-> Installing MPFR for $CURRENT_ARCH to $ROOT_DIR/$BUILD_DIR_MPFR/install/mpfr/$CURRENT_ARCH..."
     make install DESTDIR="$ROOT_DIR/$BUILD_DIR_MPFR/install/mpfr/$CURRENT_ARCH" >> "$LOG_FILE" 2>&1 || fail "-> Error Installing MPFR for $CURRENT_ARCH"
+    rm $ROOT_DIR/$BUILD_DIR_MPFR/install/mpfr/$CURRENT_ARCH/usr/local/lib/libmpfr.la
+    cp $ROOT_DIR/libmpfr.la $ROOT_DIR/$BUILD_DIR_MPFR/install/mpfr/$CURRENT_ARCH/usr/local/lib/libmpfr.la
     echo "-> Installed MPFR for $CURRENT_ARCH"
 
     echo "Successfully built MPFR for $CURRENT_ARCH"
