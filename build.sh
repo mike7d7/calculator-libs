@@ -381,6 +381,7 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
 
             export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -DANDROID -D__ANDROID_API__=21 -Os"
             export CPPFLAGS="$CFLAGS"
+            export LDFLAGS="-lc++"
 
             ./configure --host=$HOST --enable-assembly=no --enable-static --enable-shared=no >> "$LOG_FILE" 2>&1 || fail "-> Error Configuring GMP for $CURRENT_ARCH"
         ;;
