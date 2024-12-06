@@ -5,10 +5,10 @@
 # It is necessary for linking the library.
 
 # The name that we can dlopen(3).
-dlname='libmpfr.so'
+dlname='libmpfr.a'
 
 # Names of this library.
-library_names='libmpfr.so'
+library_names='libmpfr.a'
 
 # The name of the static archive.
 old_library='libmpfr.a'
