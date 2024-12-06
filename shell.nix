@@ -37,6 +37,7 @@ pkgs.mkShell {
     ninja
     libclang
     clang
+    mold
   ];
   shellHook = ''
     export ANDROID_HOME="${androidComposition.androidsdk}/libexec/android-sdk";
