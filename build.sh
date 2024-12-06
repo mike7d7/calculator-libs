@@ -27,7 +27,24 @@ LOG_FILE="$ROOT_DIR/$BUILD_DIR_OPENSSL/build.log"
 COLOR_GREEN="\033[38;5;48m"
 COLOR_END="\033[0m"
 
-#Clean up stale build...
+export ANDROID_TOOLCHAIN="$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64"
+export ANDROID_NDK_HOME=$ANDROID_NDK_ROOT
+export PATH="$ANDROID_TOOLCHAIN/bin:$PATH"
+
+if [[ -z "$ANDROID_NDK_ROOT" ]]; then
+    echo "set NDK_ROOT env variable"
+    exit 1
+fi
+error() {
+    echo -e "$@" 1>&2
+}
+
+fail() {
+    error "$@"
+    exit 1
+}
+
+# OpenSSL
 if [ -d "$BUILD_DIR_OPENSSL/tar" ]; then
   rm -rf "$BUILD_DIR_OPENSSL/tar"
 fi
@@ -47,25 +64,6 @@ mkdir -p "$BUILD_DIR_OPENSSL/tar"
 mkdir -p "$BUILD_DIR_OPENSSL/src"
 mkdir -p "$BUILD_DIR_OPENSSL/install"
 
-if [[ -z "$ANDROID_NDK_ROOT" ]]; then
-    echo "set NDK_ROOT env variable"
-    exit 1
-fi
-
-export ANDROID_TOOLCHAIN="$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64"
-export ANDROID_NDK_HOME=$ANDROID_NDK_ROOT
-export PATH="$ANDROID_TOOLCHAIN/bin:$PATH"
-
-error() {
-    echo -e "$@" 1>&2
-}
-
-fail() {
-    error "$@"
-    exit 1
-}
-
-# OpenSSL
 echo "Downloading OpenSSL..."
 curl -Lo "$BUILD_DIR_OPENSSL/tar/openssl-$OPENSSL_VERSION.tar.gz" "https://www.openssl.org/source/openssl-$OPENSSL_VERSION.tar.gz" >> "$LOG_FILE" 2>&1 || fail "Error Downloading OpenSSL"
 
