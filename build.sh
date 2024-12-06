@@ -105,7 +105,7 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
             export NM="x86_64-linux-android-nm"
             export STRIP="llvm-strip"
 
-            ./Configure android-arm64 no-ssl2 no-ssl3 no-comp no-hw no-engine no-shared no-tests no-ui no-deprecated zlib -fPIC -DANDROID -D__ANDROID_API__=21 -Os -fuse-ld="$ANDROID_TOOLCHAIN/bin/ld" >> "$LOG_FILE" 2>&1 || fail "-> Error Configuring OpenSSL for $CURRENT_ARCH"
+            ./Configure android-arm64 no-ssl2 no-ssl3 no-comp no-hw no-engine no-shared no-tests no-ui no-deprecated no-zlib -fPIC -DANDROID -D__ANDROID_API__=21 -Os -fuse-ld="$ANDROID_TOOLCHAIN/bin/ld" -static >> "$LOG_FILE" 2>&1 || fail "-> Error Configuring OpenSSL for $CURRENT_ARCH"
         ;;
         x86)
             export CC="i686-linux-android16-clang"
@@ -218,7 +218,7 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
             export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -DANDROID -D__ANDROID_API__=21 -Os"
             export CPPFLAGS="$CFLAGS"
             export CXXFLAGS="$CFLAGS -fno-exceptions -fno-rtti"
-            export LDFLAGS=""
+            export LDFLAGS="-static"
         ;;
         x86)
             export HOST="i686-linux-android"
@@ -295,7 +295,7 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
         --without-polarssl \
         --without-gnutls \
         --without-winssl \
-        --with-zlib >> "$LOG_FILE" 2>&1 || fail "-> Error Configuring curl for $CURRENT_ARCH"
+        --without-zlib >> "$LOG_FILE" 2>&1 || fail "-> Error Configuring curl for $CURRENT_ARCH"
     # sed -i '' -e 's~#define HAVE_STRDUP~//#define HAVE_STRDUP~g' configure
     echo "-> Configured curl for $CURRENT_ARCH"
 
@@ -374,15 +374,15 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
             export CXX="aarch64-linux-android21-clang++"
             export AR="llvm-ar"
             export AS="$CC"
-            export LD="ld"
+            export LD="mold"
             export RANLIB="llvm-ranlib"
             export NM="nm"
             export STRIP="llvm-strip"
 
             export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -DANDROID -D__ANDROID_API__=21 -Os"
-            export CPPFLAGS="$CFLAGS -fno-exceptions -fno-rtti"
+            export CPPFLAGS="$CFLAGS"
 
-            ./configure --host=$HOST --enable-assembly=no --with-sysroot="$ANDROID_TOOLCHAIN/sysroot -fPIC -DANDROID -D__ANDROID_API__=21 -Os fuse-ld=$ANDROID_TOOLCHAIN/bin/ld" >> "$LOG_FILE" 2>&1 || fail "-> Error Configuring GMP for $CURRENT_ARCH"
+            ./configure --host=$HOST --enable-assembly=no --enable-static --enable-shared=no >> "$LOG_FILE" 2>&1 || fail "-> Error Configuring GMP for $CURRENT_ARCH"
         ;;
         x86)
             export HOST="i686-linux-android"
@@ -505,6 +505,7 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
 
             export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -DANDROID -D__ANDROID_API__=21 -Os"
             export CPPFLAGS="$CFLAGS"
+            export LDFLAGS="-static"
 
             ./configure --host=$HOST --with-gmp="$ROOT_DIR/$BUILD_DIR_GMP/install/gmp/$CURRENT_ARCH/usr/local" >> "$LOG_FILE" 2>&1 || fail "-> Error Configuring GMP for $CURRENT_ARCH"
         ;;
@@ -631,6 +632,7 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
 
             export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -DANDROID -D__ANDROID_API__=21 -Os"
             export CPPFLAGS="$CFLAGS"
+            export LDFLAGS="-static"
 
             ./configure --host=$HOST >> "$LOG_FILE" 2>&1 || fail "-> Error Configuring XZ for $CURRENT_ARCH"
         ;;
@@ -755,8 +757,9 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
 
             export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -DANDROID -D__ANDROID_API__=21 -Os"
             export CPPFLAGS="$CFLAGS"
+            export LDFLAGS="-lc++"
 
-            ./configure --host=$HOST >> "$LOG_FILE" 2>&1 || fail "-> Error Configuring ICONV for $CURRENT_ARCH"
+            ./configure --host=$HOST --enable-static --enable-shared=no >> "$LOG_FILE" 2>&1 || fail "-> Error Configuring ICONV for $CURRENT_ARCH"
         ;;
         x86)
             export HOST="i686-linux-android"
@@ -872,15 +875,16 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
             export CXX="aarch64-linux-android21-clang++"
             export AR="llvm-ar"
             export AS="$CC"
-            export LD="ld"
+            export LD="mold"
             export RANLIB="llvm-ranlib"
             export NM="nm"
             export STRIP="llvm-strip"
 
             export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -DANDROID -D__ANDROID_API__=21 -Os"
             export CPPFLAGS="$CFLAGS"
+            export LDFLAGS="-L$ROOT_DIR/$BUILD_DIR_XZ/install/xz/arm64/usr/local/lib/liblzma.a -static"
 
-            ./autogen.sh --host=$HOST --enable-static --without-python --with-lzma="$ROOT_DIR/$BUILD_DIR_XZ/install/xz/$CURRENT_ARCH/usr/local" >> "$LOG_FILE" 2>&1 || fail "-> Error Configuring XML2 for $CURRENT_ARCH"
+            ./autogen.sh --host=$HOST --enable-static --disable-shared --without-python --with-lzma="$ROOT_DIR/$BUILD_DIR_XZ/install/xz/$CURRENT_ARCH/usr/local/lib/liblzma.a" >> "$LOG_FILE" 2>&1 || fail "-> Error Configuring XML2 for $CURRENT_ARCH"
         ;;
         x86)
             export HOST="i686-linux-android"
@@ -997,20 +1001,20 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
             export CXX="aarch64-linux-android21-clang++"
             export AR="llvm-ar"
             export AS="$CC"
-            export LD="ld"
+            export LD="mold"
             export RANLIB="llvm-ranlib"
             export NM="nm"
             export STRIP="llvm-strip"
 
             export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -DANDROID -D__ANDROID_API__=21 -Os"
 
-            export CPPFLAGS="-I$ROOT_DIR/$BUILD_DIR_GMP/install/gmp/arm64/usr/local/include -I$ROOT_DIR/$BUILD_DIR_MPFR/install/mpfr/arm64/usr/local/include -I$ROOT_DIR/$BUILD_DIR_ICONV/install/iconv/arm64/usr/local/include $CFLAGS"
-            export LDFLAGS="-L$ROOT_DIR/$BUILD_DIR_GMP/install/gmp/arm64/usr/local/lib  -L$ROOT_DIR/$BUILD_DIR_MPFR/install/mpfr/arm64/usr/local/lib -L$ROOT_DIR/$BUILD_DIR_ICONV/install/iconv/arm64/usr/local/lib -Wl,--allow-shlib-undefined"
-            QALCULATE_LIBXML_CFLAGS="-I$ROOT_DIR/$BUILD_DIR_XML2/install/xml2/arm64/usr/local/include/libxml2"
-            QALCULATE_LIBXML_LIBS="-L$ROOT_DIR/$BUILD_DIR_XML2/install/xml2/arm64/usr/local/lib"
+            export CPPFLAGS="-I$ROOT_DIR/$BUILD_DIR_GMP/install/gmp/arm64/usr/local/include -I$ROOT_DIR/$BUILD_DIR_MPFR/install/mpfr/arm64/usr/local/include -I$ROOT_DIR/$BUILD_DIR_ICONV/install/iconv/arm64/usr/local/include -I$ROOT_DIR/$BUILD_DIR_XML2/install/xml2/arm64/usr/local/include/libxml2 $CFLAGS"
+            export LDFLAGS="-static -L$ROOT_DIR/$BUILD_DIR_GMP/install/gmp/arm64/usr/local/lib -L$ROOT_DIR/$BUILD_DIR_MPFR/install/mpfr/arm64/usr/local/lib -L$ROOT_DIR/$BUILD_DIR_ICONV/install/iconv/arm64/usr/local/lib -L$ROOT_DIR/$BUILD_DIR_XML2/install/xml2/arm64/usr/local/lib/libxml2.a -Wl,--allow-shlib-undefined"
+            QALCULATE_LIBXML_CFLAGS="$ROOT_DIR/$BUILD_DIR_XML2/install/xml2/arm64/usr/local/include/libxml2"
+            QALCULATE_LIBXML_LIBS="$ROOT_DIR/$BUILD_DIR_XML2/install/xml2/arm64/usr/local/lib/libxml2.a"
             QALCULATE_LIBCURL_CFLAGS="-I$ROOT_DIR/$BUILD_DIR_CURL/install/curl/arm64/include"
-            QALCULATE_LIBCURL_LIBS="-L$ROOT_DIR/$BUILD_DIR_CURL/install/curl/arm64/lib"
-            ./autogen.sh --host=$HOST --without-icu --without-libintl-prefix --enable-compiled-definitions LIBXML_CFLAGS=$QALCULATE_LIBXML_CFLAGS LIBXML_LIBS=$QALCULATE_LIBXML_LIBS LIBCURL_CFLAGS=$QALCULATE_LIBCURL_CFLAGS LIBCURL_LIBS=$QALCULATE_LIBCURL_LIBS >> "$LOG_FILE" 2>&1 || fail "-> Error Configuring QALCULATE for $CURRENT_ARCH"
+            QALCULATE_LIBCURL_LIBS="$ROOT_DIR/$BUILD_DIR_CURL/install/curl/arm64/lib/libcurl.a"
+            ./autogen.sh --host=$HOST --enable-static --disable-shared --without-icu --without-libintl-prefix --enable-compiled-definitions LIBXML_CFLAGS=$QALCULATE_LIBXML_CFLAGS LIBXML_LIBS=$QALCULATE_LIBXML_LIBS LIBCURL_CFLAGS=$QALCULATE_LIBCURL_CFLAGS LIBCURL_LIBS=$QALCULATE_LIBCURL_LIBS >> "$LOG_FILE" 2>&1 || fail "-> Error Configuring QALCULATE for $CURRENT_ARCH"
         ;;
         x86)
             export HOST="i686-linux-android"
