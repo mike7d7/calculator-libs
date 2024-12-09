@@ -374,7 +374,7 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
             export AS="llvm-as"
             export LD="mold"
             export RANLIB="llvm-ranlib"
-            export NM="nm"
+            export NM="llvm-nm"
             export STRIP="llvm-strip"
 
             export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -DANDROID -D__ANDROID_API__=21 -Os"
@@ -499,7 +499,7 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
             export AS="llvm-as"
             export LD="mold"
             export RANLIB="llvm-ranlib"
-            export NM="nm"
+            export NM="llvm-nm"
             export STRIP="llvm-strip"
 
             export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -DANDROID -D__ANDROID_API__=21 -Os"
@@ -626,7 +626,7 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
             export AS="llvm-as"
             export LD="mold"
             export RANLIB="llvm-ranlib"
-            export NM="nm"
+            export NM="llvm-nm"
             export STRIP="llvm-strip"
 
             export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -DANDROID -D__ANDROID_API__=21 -Os"
@@ -751,7 +751,7 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
             export AS="llvm-as"
             export LD="mold"
             export RANLIB="llvm-ranlib"
-            export NM="nm"
+            export NM="llvm-nm"
             export STRIP="llvm-strip"
 
             export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -DANDROID -D__ANDROID_API__=21 -Os"
@@ -876,7 +876,7 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
             export AS="llvm-as"
             export LD="mold"
             export RANLIB="llvm-ranlib"
-            export NM="nm"
+            export NM="llvm-nm"
             export STRIP="llvm-strip"
 
             export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -DANDROID -D__ANDROID_API__=21 -Os"
@@ -1003,7 +1003,7 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
             export AS="llvm-as"
             export LD="mold"
             export RANLIB="llvm-ranlib"
-            export NM="nm"
+            export NM="llvm-nm"
             export STRIP="llvm-strip"
 
             export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -DANDROID -D__ANDROID_API__=21 -Os"
