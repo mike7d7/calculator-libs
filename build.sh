@@ -994,6 +994,7 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
             export LDFLAGS="-Wl,--fix-cortex-a8"
         ;;
         arm64)
+            export PKG_CONFIG_PATH="$ROOT_DIR/$BUILD_DIR_XML2/install/xml2/arm64/usr/local/lib/pkgconfig:$ROOT_DIR/$BUILD_DIR_CURL/install/curl/arm64/lib/pkgconfig"
             export HOST="aarch64-linux-android"
 
             export CC="aarch64-linux-android21-clang"
@@ -1008,12 +1009,8 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
             export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -DANDROID -D__ANDROID_API__=21 -Os"
 
             export CPPFLAGS="-I$ROOT_DIR/$BUILD_DIR_GMP/install/gmp/arm64/usr/local/include -I$ROOT_DIR/$BUILD_DIR_MPFR/install/mpfr/arm64/usr/local/include -I$ROOT_DIR/$BUILD_DIR_ICONV/install/iconv/arm64/usr/local/include -I$ROOT_DIR/$BUILD_DIR_XML2/install/xml2/arm64/usr/local/include/libxml2 $CFLAGS"
-            export LDFLAGS="-static -L$ROOT_DIR/$BUILD_DIR_GMP/install/gmp/arm64/usr/local/lib -L$ROOT_DIR/$BUILD_DIR_MPFR/install/mpfr/arm64/usr/local/lib -L$ROOT_DIR/$BUILD_DIR_ICONV/install/iconv/arm64/usr/local/lib -L$ROOT_DIR/$BUILD_DIR_XML2/install/xml2/arm64/usr/local/lib/libxml2.a -Wl,--allow-shlib-undefined"
-            QALCULATE_LIBXML_CFLAGS="$ROOT_DIR/$BUILD_DIR_XML2/install/xml2/arm64/usr/local/include/libxml2"
-            QALCULATE_LIBXML_LIBS="$ROOT_DIR/$BUILD_DIR_XML2/install/xml2/arm64/usr/local/lib/libxml2.a"
-            QALCULATE_LIBCURL_CFLAGS="-I$ROOT_DIR/$BUILD_DIR_CURL/install/curl/arm64/include"
-            QALCULATE_LIBCURL_LIBS="$ROOT_DIR/$BUILD_DIR_CURL/install/curl/arm64/lib/libcurl.a"
-            ./autogen.sh --host=$HOST --enable-static --disable-shared --without-icu --without-libintl-prefix --enable-compiled-definitions LIBXML_CFLAGS=$QALCULATE_LIBXML_CFLAGS LIBXML_LIBS=$QALCULATE_LIBXML_LIBS LIBCURL_CFLAGS=$QALCULATE_LIBCURL_CFLAGS LIBCURL_LIBS=$QALCULATE_LIBCURL_LIBS >> "$LOG_FILE" 2>&1 || fail "-> Error Configuring QALCULATE for $CURRENT_ARCH"
+            export LDFLAGS="-static -L$ROOT_DIR/$BUILD_DIR_GMP/install/gmp/arm64/usr/local/lib -L$ROOT_DIR/$BUILD_DIR_MPFR/install/mpfr/arm64/usr/local/lib -L$ROOT_DIR/$BUILD_DIR_ICONV/install/iconv/arm64/usr/local/lib -L$ROOT_DIR/$BUILD_DIR_XML2/install/xml2/arm64/usr/local/lib -Wl,--allow-shlib-undefined"
+            ./autogen.sh --host=$HOST --enable-static --disable-shared --without-icu --without-libintl-prefix --enable-compiled-definitions >> "$LOG_FILE" 2>&1 || fail "-> Error Configuring QALCULATE for $CURRENT_ARCH"
         ;;
         x86)
             export HOST="i686-linux-android"
