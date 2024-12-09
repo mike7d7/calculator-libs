@@ -838,10 +838,10 @@ mkdir -p "$BUILD_DIR_XML2/install"
 
 cd "$ROOT_DIR"
 echo "Downloading XML2..."
-curl -Lo "$BUILD_DIR_XML2/tar/xml2-$XML2_VERSION.tar.gz" "https://gitlab.gnome.org/GNOME/libxml2/-/archive/v$XML2_VERSION/libxml2-v$XML2_VERSION.tar.gz" >> "$LOG_FILE" 2>&1 || fail "Error Downloading xml2"
+curl -Lo "$BUILD_DIR_XML2/tar/xml2-$XML2_VERSION.tar.xz" "https://download.gnome.org/sources/libxml2/2.13/libxml2-$XML2_VERSION.tar.xz" >> "$LOG_FILE" 2>&1 || fail "Error Downloading xml2"
 echo "Uncompressing XML2..."
-tar xzf "$BUILD_DIR_XML2/tar/xml2-$XML2_VERSION.tar.gz" -C "$BUILD_DIR_XML2/src" || fail "Error Uncompressing XML2"
-cd "$BUILD_DIR_XML2/src/libxml2-v$XML2_VERSION"
+tar xf "$BUILD_DIR_XML2/tar/xml2-$XML2_VERSION.tar.xz" -C "$BUILD_DIR_XML2/src" || fail "Error Uncompressing XML2"
+cd "$BUILD_DIR_XML2/src/libxml2-$XML2_VERSION"
 
 for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
     echo "Building XML2 for $CURRENT_ARCH build..."
@@ -879,11 +879,11 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
             export NM="llvm-nm"
             export STRIP="llvm-strip"
 
-            export CPPFLAGS="$CFLAGS"
-            export LDFLAGS="-L$ROOT_DIR/$BUILD_DIR_XZ/install/xz/arm64/usr/local/lib/liblzma.a -static"
             export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -DANDROID -D__ANDROID_API__=22 -Os"
+            export CPPFLAGS="-I$ROOT_DIR/$BUILD_DIR_ICONV/install/iconv/arm64/usr/local/include $CFLAGS"
+            export LDFLAGS="-L$ROOT_DIR/$BUILD_DIR_XZ/install/xz/arm64/usr/local/lib/liblzma.a -static -L$ROOT_DIR/$BUILD_DIR_ICONV/install/iconv/arm64/usr/local/lib/libiconv.a -static"
 
-            ./autogen.sh --host=$HOST --enable-static --disable-shared --without-python --with-lzma="$ROOT_DIR/$BUILD_DIR_XZ/install/xz/$CURRENT_ARCH/usr/local/lib/liblzma.a" >> "$LOG_FILE" 2>&1 || fail "-> Error Configuring XML2 for $CURRENT_ARCH"
+            ./configure --host=$HOST --enable-static --disable-shared --without-python --with-iconv="$ROOT_DIR/$BUILD_DIR_ICONV/install/iconv/arm64/usr/local/lib/libiconv.a" --with-lzma="$ROOT_DIR/$BUILD_DIR_XZ/install/xz/$CURRENT_ARCH/usr/local/lib/liblzma.a" >> "$LOG_FILE" 2>&1 || fail "-> Error Configuring XML2 for $CURRENT_ARCH"
         ;;
         x86)
             export HOST="i686-linux-android"
