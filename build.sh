@@ -94,8 +94,8 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
             ./Configure android-arm no-ssl2 no-ssl3 no-comp no-hw no-engine no-shared no-tests no-ui no-deprecated zlib -Wl,--fix-cortex-a8 -fPIC -DANDROID -D__ANDROID_API__=16 -Os -fuse-ld="$ANDROID_TOOLCHAIN/bin/arm-linux-androideabi-ld" >> "$LOG_FILE" 2>&1 || fail "-> Error Configuring OpenSSL for $CURRENT_ARCH"
         ;;
         arm64)
-            export CC="aarch64-linux-android21-clang"
-            export CXX="aarch64-linux-android21-clang++"
+            export CC="aarch64-linux-android22-clang"
+            export CXX="aarch64-linux-android22-clang++"
             export AR="llvm-ar"
             export AS="llvm-as"
             export LD="mold"
@@ -103,7 +103,7 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
             export NM="x86_64-linux-android-nm"
             export STRIP="llvm-strip"
 
-            ./Configure android-arm64 no-ssl2 no-ssl3 no-comp no-hw no-engine no-shared no-tests no-ui no-deprecated no-zlib -fPIC -DANDROID -D__ANDROID_API__=21 -Os -fuse-ld="$ANDROID_TOOLCHAIN/bin/ld" -static >> "$LOG_FILE" 2>&1 || fail "-> Error Configuring OpenSSL for $CURRENT_ARCH"
+            ./Configure android-arm64 no-ssl2 no-ssl3 no-comp no-hw no-engine no-shared no-tests no-ui no-deprecated no-zlib -fPIC -DANDROID -D__ANDROID_API__=22 -Os -fuse-ld="$ANDROID_TOOLCHAIN/bin/ld" -static >> "$LOG_FILE" 2>&1 || fail "-> Error Configuring OpenSSL for $CURRENT_ARCH"
         ;;
         x86)
             export CC="i686-linux-android16-clang"
@@ -127,7 +127,7 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
             export NM="x86_64-linux-android-nm"
             export STRIP="llvm-strip"
 
-            ./Configure android-x86_64 no-ssl2 no-ssl3 no-comp no-hw no-engine no-shared no-tests no-ui no-deprecated zlib -mtune=intel -mssse3 -mfpmath=sse -m64 -fPIC -DANDROID -D__ANDROID_API__=21 -Os -fuse-ld="$ANDROID_TOOLCHAIN/bin/x86_64-linux-android-ld" >> "$LOG_FILE" 2>&1 || fail "-> Error Configuring OpenSSL for $CURRENT_ARCH"
+            ./Configure android-x86_64 no-ssl2 no-ssl3 no-comp no-hw no-engine no-shared no-tests no-ui no-deprecated zlib -mtune=intel -mssse3 -mfpmath=sse -m64 -fPIC -DANDROID -D__ANDROID_API__=22 -Os -fuse-ld="$ANDROID_TOOLCHAIN/bin/x86_64-linux-android-ld" >> "$LOG_FILE" 2>&1 || fail "-> Error Configuring OpenSSL for $CURRENT_ARCH"
         ;;
     esac
     # sed -i '' -e "s!-O3!-Os!g" "Makefile" || exit 1
@@ -204,8 +204,8 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
         arm64)
             export HOST="aarch64-linux-android"
 
-            export CC="aarch64-linux-android21-clang"
-            export CXX="aarch64-linux-android21-clang++"
+            export CC="aarch64-linux-android22-clang"
+            export CXX="aarch64-linux-android22-clang++"
             export AR="llvm-ar"
             export AS="llvm-as"
             export LD="mold"
@@ -213,7 +213,7 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
             export NM="aarch64-linux-android-nm"
             export STRIP="llvm-strip"
 
-            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -DANDROID -D__ANDROID_API__=21 -Os"
+            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -DANDROID -D__ANDROID_API__=22 -Os"
             export CPPFLAGS="$CFLAGS"
             export CXXFLAGS="$CFLAGS -fno-exceptions -fno-rtti"
             export LDFLAGS="-static"
@@ -247,7 +247,7 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
             export NM="x86_64-linux-android-nm"
             export STRIP="x86_64-linux-android-strip"
 
-            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -mssse3 -mfpmath=sse -m64 -DANDROID -D__ANDROID_API__=21 -Os"
+            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -mssse3 -mfpmath=sse -m64 -DANDROID -D__ANDROID_API__=22 -Os"
             export CPPFLAGS="$CFLAGS"
             export CXXFLAGS="$CFLAGS -fno-exceptions -fno-rtti"
             export LDFLAGS=""
@@ -368,8 +368,8 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
         arm64)
             export HOST="aarch64-linux-android"
 
-            export CC="aarch64-linux-android21-clang"
-            export CXX="aarch64-linux-android21-clang++"
+            export CC="aarch64-linux-android22-clang"
+            export CXX="aarch64-linux-android22-clang++"
             export AR="llvm-ar"
             export AS="llvm-as"
             export LD="mold"
@@ -377,7 +377,7 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
             export NM="llvm-nm"
             export STRIP="llvm-strip"
 
-            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -DANDROID -D__ANDROID_API__=21 -Os"
+            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -DANDROID -D__ANDROID_API__=22 -Os"
             export CPPFLAGS="$CFLAGS"
             export LDFLAGS="-static-libstdc++"
 
@@ -412,7 +412,7 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
             export NM="x86_64-linux-android-nm"
             export STRIP="x86_64-linux-android-strip"
 
-            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -mtune=intel -mssse3 -mfpmath=sse -m64 -DANDROID -D__ANDROID_API__=21 -Os"
+            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -mtune=intel -mssse3 -mfpmath=sse -m64 -DANDROID -D__ANDROID_API__=22 -Os"
             export CPPFLAGS="$CFLAGS"
             export CXXFLAGS="$CFLAGS -fno-exceptions -fno-rtti"
             export LDFLAGS=""
@@ -493,8 +493,8 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
         arm64)
             export HOST="aarch64-linux-android"
 
-            export CC="aarch64-linux-android21-clang"
-            export CXX="aarch64-linux-android21-clang++"
+            export CC="aarch64-linux-android22-clang"
+            export CXX="aarch64-linux-android22-clang++"
             export AR="llvm-ar"
             export AS="llvm-as"
             export LD="mold"
@@ -502,7 +502,7 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
             export NM="llvm-nm"
             export STRIP="llvm-strip"
 
-            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -DANDROID -D__ANDROID_API__=21 -Os"
+            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -DANDROID -D__ANDROID_API__=22 -Os"
             export CPPFLAGS="$CFLAGS"
             export LDFLAGS="-static"
 
@@ -537,7 +537,7 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
             export NM="x86_64-linux-android-nm"
             export STRIP="x86_64-linux-android-strip"
 
-            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -mtune=intel -mssse3 -mfpmath=sse -m64 -DANDROID -D__ANDROID_API__=21 -Os"
+            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -mtune=intel -mssse3 -mfpmath=sse -m64 -DANDROID -D__ANDROID_API__=22 -Os"
             export CPPFLAGS="$CFLAGS"
             export CXXFLAGS="$CFLAGS -fno-exceptions -fno-rtti"
             export LDFLAGS=""
@@ -620,8 +620,8 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
         arm64)
             export HOST="aarch64-linux-android"
 
-            export CC="aarch64-linux-android21-clang"
-            export CXX="aarch64-linux-android21-clang++"
+            export CC="aarch64-linux-android22-clang"
+            export CXX="aarch64-linux-android22-clang++"
             export AR="llvm-ar"
             export AS="llvm-as"
             export LD="mold"
@@ -629,7 +629,7 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
             export NM="llvm-nm"
             export STRIP="llvm-strip"
 
-            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -DANDROID -D__ANDROID_API__=21 -Os"
+            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -DANDROID -D__ANDROID_API__=22 -Os"
             export CPPFLAGS="$CFLAGS"
             export LDFLAGS="-static"
 
@@ -664,7 +664,7 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
             export NM="x86_64-linux-android-nm"
             export STRIP="x86_64-linux-android-strip"
 
-            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -mtune=intel -mssse3 -mfpmath=sse -m64 -DANDROID -D__ANDROID_API__=21 -Os"
+            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -mtune=intel -mssse3 -mfpmath=sse -m64 -DANDROID -D__ANDROID_API__=22 -Os"
             export CPPFLAGS="$CFLAGS"
             export CXXFLAGS="$CFLAGS -fno-exceptions -fno-rtti"
             export LDFLAGS=""
@@ -745,8 +745,8 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
         arm64)
             export HOST="aarch64-linux-android"
 
-            export CC="aarch64-linux-android21-clang"
-            export CXX="aarch64-linux-android21-clang++"
+            export CC="aarch64-linux-android22-clang"
+            export CXX="aarch64-linux-android22-clang++"
             export AR="llvm-ar"
             export AS="llvm-as"
             export LD="mold"
@@ -754,7 +754,7 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
             export NM="llvm-nm"
             export STRIP="llvm-strip"
 
-            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -DANDROID -D__ANDROID_API__=21 -Os"
+            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -DANDROID -D__ANDROID_API__=22 -Os"
             export CPPFLAGS="$CFLAGS"
             export LDFLAGS="-static-libstdc++"
 
@@ -789,7 +789,7 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
             export NM="x86_64-linux-android-nm"
             export STRIP="x86_64-linux-android-strip"
 
-            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -mtune=intel -mssse3 -mfpmath=sse -m64 -DANDROID -D__ANDROID_API__=21 -Os"
+            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -mtune=intel -mssse3 -mfpmath=sse -m64 -DANDROID -D__ANDROID_API__=22 -Os"
             export CPPFLAGS="$CFLAGS"
             export CXXFLAGS="$CFLAGS -fno-exceptions -fno-rtti"
             export LDFLAGS=""
@@ -870,8 +870,8 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
         arm64)
             export HOST="aarch64-linux-android"
 
-            export CC="aarch64-linux-android21-clang"
-            export CXX="aarch64-linux-android21-clang++"
+            export CC="aarch64-linux-android22-clang"
+            export CXX="aarch64-linux-android22-clang++"
             export AR="llvm-ar"
             export AS="llvm-as"
             export LD="mold"
@@ -879,9 +879,9 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
             export NM="llvm-nm"
             export STRIP="llvm-strip"
 
-            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -DANDROID -D__ANDROID_API__=21 -Os"
             export CPPFLAGS="$CFLAGS"
             export LDFLAGS="-L$ROOT_DIR/$BUILD_DIR_XZ/install/xz/arm64/usr/local/lib/liblzma.a -static"
+            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -DANDROID -D__ANDROID_API__=22 -Os"
 
             ./autogen.sh --host=$HOST --enable-static --disable-shared --without-python --with-lzma="$ROOT_DIR/$BUILD_DIR_XZ/install/xz/$CURRENT_ARCH/usr/local/lib/liblzma.a" >> "$LOG_FILE" 2>&1 || fail "-> Error Configuring XML2 for $CURRENT_ARCH"
         ;;
@@ -914,7 +914,7 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
             export NM="x86_64-linux-android-nm"
             export STRIP="x86_64-linux-android-strip"
 
-            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -mtune=intel -mssse3 -mfpmath=sse -m64 -DANDROID -D__ANDROID_API__=21 -Os"
+            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -mtune=intel -mssse3 -mfpmath=sse -m64 -DANDROID -D__ANDROID_API__=22 -Os"
             export CPPFLAGS="$CFLAGS"
             export CXXFLAGS="$CFLAGS -fno-exceptions -fno-rtti"
             export LDFLAGS=""
@@ -997,8 +997,8 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
             export PKG_CONFIG_PATH="$ROOT_DIR/$BUILD_DIR_XML2/install/xml2/arm64/usr/local/lib/pkgconfig:$ROOT_DIR/$BUILD_DIR_CURL/install/curl/arm64/lib/pkgconfig"
             export HOST="aarch64-linux-android"
 
-            export CC="aarch64-linux-android21-clang"
-            export CXX="aarch64-linux-android21-clang++"
+            export CC="aarch64-linux-android22-clang"
+            export CXX="aarch64-linux-android22-clang++"
             export AR="llvm-ar"
             export AS="llvm-as"
             export LD="mold"
@@ -1006,7 +1006,7 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
             export NM="llvm-nm"
             export STRIP="llvm-strip"
 
-            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -DANDROID -D__ANDROID_API__=21 -Os"
+            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -DANDROID -D__ANDROID_API__=22 -Os"
 
             export CPPFLAGS="-I$ROOT_DIR/$BUILD_DIR_GMP/install/gmp/arm64/usr/local/include -I$ROOT_DIR/$BUILD_DIR_MPFR/install/mpfr/arm64/usr/local/include -I$ROOT_DIR/$BUILD_DIR_ICONV/install/iconv/arm64/usr/local/include -I$ROOT_DIR/$BUILD_DIR_XML2/install/xml2/arm64/usr/local/include/libxml2 $CFLAGS"
             export LDFLAGS="-static -L$ROOT_DIR/$BUILD_DIR_GMP/install/gmp/arm64/usr/local/lib -L$ROOT_DIR/$BUILD_DIR_MPFR/install/mpfr/arm64/usr/local/lib -L$ROOT_DIR/$BUILD_DIR_ICONV/install/iconv/arm64/usr/local/lib -L$ROOT_DIR/$BUILD_DIR_XML2/install/xml2/arm64/usr/local/lib -Wl,--allow-shlib-undefined"
@@ -1041,7 +1041,7 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
             export NM="x86_64-linux-android-nm"
             export STRIP="x86_64-linux-android-strip"
 
-            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -mtune=intel -mssse3 -mfpmath=sse -m64 -DANDROID -D__ANDROID_API__=21 -Os"
+            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -mtune=intel -mssse3 -mfpmath=sse -m64 -DANDROID -D__ANDROID_API__=22 -Os"
             export CPPFLAGS="$CFLAGS"
             export CXXFLAGS="$CFLAGS -fno-exceptions -fno-rtti"
             export LDFLAGS=""
