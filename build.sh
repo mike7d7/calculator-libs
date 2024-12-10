@@ -310,6 +310,7 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
 
     echo "-> Installing curl for $CURRENT_ARCH to $ROOT_DIR/$BUILD_DIR_CURL/install/curl/$CURRENT_ARCH..."
     make install >> "$LOG_FILE" 2>&1 || fail "-> Error Installing curl for $CURRENT_ARCH"
+    cp "$ROOT_DIR/$BUILD_DIR_CURL/install/curl/$CURRENT_ARCH/lib/libcurl.a" "$OUTPUT_DIR"
     echo "-> Installed curl for $CURRENT_ARCH"
 
     echo "Successfully built curl for $CURRENT_ARCH"
