@@ -43,6 +43,11 @@ fail() {
     error "$@"
     exit 1
 }
+if [ -d "$ROOT_DIR/outputs" ]; then
+    rm -rf "$ROOT_DIR/outputs"
+fi
+mkdir -p "$ROOT_DIR/outputs"
+OUTPUT_DIR="$ROOT_DIR/outputs"
 
 # OpenSSL
 if [ -d "$BUILD_DIR_OPENSSL/tar" ]; then
@@ -139,6 +144,8 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
 
     echo "-> Installing OpenSSL for $CURRENT_ARCH to $ROOT_DIR/$BUILD_DIR_OPENSSL/install/openssl/$CURRENT_ARCH..."
     make install DESTDIR="$ROOT_DIR/$BUILD_DIR_OPENSSL/install/openssl/$CURRENT_ARCH" >> "$LOG_FILE" 2>&1 || fail "-> Error Installing OpenSSL for $CURRENT_ARCH"
+    cp "$ROOT_DIR/$BUILD_DIR_OPENSSL/install/openssl/$CURRENT_ARCH/usr/local/lib/libcrypto.a" "$OUTPUT_DIR"
+    cp "$ROOT_DIR/$BUILD_DIR_OPENSSL/install/openssl/$CURRENT_ARCH/usr/local/lib/libssl.a" "$OUTPUT_DIR"
     echo "-> Installed OpenSSL for $CURRENT_ARCH"
 
     echo "Successfully built OpenSSL for $CURRENT_ARCH"
@@ -428,6 +435,7 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
 
     echo "-> Installing GMP for $CURRENT_ARCH to $ROOT_DIR/$BUILD_DIR_GMP/install/gmp/$CURRENT_ARCH..."
     make install DESTDIR="$ROOT_DIR/$BUILD_DIR_GMP/install/gmp/$CURRENT_ARCH" >> "$LOG_FILE" 2>&1 || fail "-> Error Installing GMP for $CURRENT_ARCH"
+    cp "$ROOT_DIR/$BUILD_DIR_GMP/install/gmp/$CURRENT_ARCH/usr/local/lib/libgmp.a" "$OUTPUT_DIR"
     echo "-> Installed GMP for $CURRENT_ARCH"
 
     echo "Successfully built GMP for $CURRENT_ARCH"
@@ -554,7 +562,8 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
     echo "-> Installing MPFR for $CURRENT_ARCH to $ROOT_DIR/$BUILD_DIR_MPFR/install/mpfr/$CURRENT_ARCH..."
     make install DESTDIR="$ROOT_DIR/$BUILD_DIR_MPFR/install/mpfr/$CURRENT_ARCH" >> "$LOG_FILE" 2>&1 || fail "-> Error Installing MPFR for $CURRENT_ARCH"
     rm $ROOT_DIR/$BUILD_DIR_MPFR/install/mpfr/$CURRENT_ARCH/usr/local/lib/libmpfr.la
-    cp $ROOT_DIR/libmpfr.la $ROOT_DIR/$BUILD_DIR_MPFR/install/mpfr/$CURRENT_ARCH/usr/local/lib/libmpfr.la
+    # cp $ROOT_DIR/libmpfr.la $ROOT_DIR/$BUILD_DIR_MPFR/install/mpfr/$CURRENT_ARCH/usr/local/lib/libmpfr.la
+    cp "$ROOT_DIR/$BUILD_DIR_MPFR/install/mpfr/$CURRENT_ARCH/usr/local/lib/libmpfr.a" "$OUTPUT_DIR"
     echo "-> Installed MPFR for $CURRENT_ARCH"
 
     echo "Successfully built MPFR for $CURRENT_ARCH"
@@ -680,6 +689,7 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
 
     echo "-> Installing XZ for $CURRENT_ARCH to $ROOT_DIR/$BUILD_DIR_XZ/install/xz/$CURRENT_ARCH..."
     make install DESTDIR="$ROOT_DIR/$BUILD_DIR_XZ/install/xz/$CURRENT_ARCH" >> "$LOG_FILE" 2>&1 || fail "-> Error Installing XZ for $CURRENT_ARCH"
+    cp "$ROOT_DIR/$BUILD_DIR_XZ/install/xz/$CURRENT_ARCH/usr/local/lib/liblzma.a" "$OUTPUT_DIR"
     echo "-> Installed XZ for $CURRENT_ARCH"
 
     echo "Successfully built XZ for $CURRENT_ARCH"
@@ -805,6 +815,8 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
 
     echo "-> Installing ICONV for $CURRENT_ARCH to $ROOT_DIR/$BUILD_DIR_ICONV/install/iconv/$CURRENT_ARCH..."
     make install DESTDIR="$ROOT_DIR/$BUILD_DIR_ICONV/install/iconv/$CURRENT_ARCH" >> "$LOG_FILE" 2>&1 || fail "-> Error Installing ICONV for $CURRENT_ARCH"
+    cp "$ROOT_DIR/$BUILD_DIR_ICONV/install/iconv/$CURRENT_ARCH/usr/local/lib/libcharset.a" "$OUTPUT_DIR"
+    cp "$ROOT_DIR/$BUILD_DIR_ICONV/install/iconv/$CURRENT_ARCH/usr/local/lib/libiconv.a" "$OUTPUT_DIR"
     echo "-> Installed ICONV for $CURRENT_ARCH"
 
     echo "Successfully built ICONV for $CURRENT_ARCH"
@@ -930,6 +942,7 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
 
     echo "-> Installing XML2 for $CURRENT_ARCH to $ROOT_DIR/$BUILD_DIR_XML2/install/xml2/$CURRENT_ARCH..."
     make install DESTDIR="$ROOT_DIR/$BUILD_DIR_XML2/install/xml2/$CURRENT_ARCH" >> "$LOG_FILE" 2>&1 || fail "-> Error Installing XML2 for $CURRENT_ARCH"
+    cp "$ROOT_DIR/$BUILD_DIR_XML2/install/xml2/$CURRENT_ARCH/usr/local/lib/libxml2.a" "$OUTPUT_DIR"
     echo "-> Installed XML2 for $CURRENT_ARCH"
 
     echo "Successfully built XML2 for $CURRENT_ARCH"
@@ -1057,6 +1070,7 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
 
     echo "-> Installing QALCULATE for $CURRENT_ARCH to $ROOT_DIR/$BUILD_DIR_QALCULATE/install/qalculate/$CURRENT_ARCH..."
     make install DESTDIR="$ROOT_DIR/$BUILD_DIR_QALCULATE/install/qalculate/$CURRENT_ARCH" >> "$LOG_FILE" 2>&1 || fail "-> Error Installing QALCULATE for $CURRENT_ARCH"
+    cp "$ROOT_DIR/$BUILD_DIR_QALCULATE/install/qalculate/$CURRENT_ARCH/usr/local/lib/libqalculate.a" "$OUTPUT_DIR"
     echo "-> Installed QALCULATE for $CURRENT_ARCH"
 
     echo "Successfully built QALCULATE for $CURRENT_ARCH"
