@@ -87,16 +87,7 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
     echo "-> Configuring OpenSSL for $CURRENT_ARCH build..."
     case $CURRENT_ARCH in
         armv7)
-            export CC="armv7a-linux-androideabi16-clang"
-            export CXX="armv7a-linux-androideabi16-clang++"
-            export AR="arm-linux-androideabi-ar"
-            export AS="arm-linux-androideabi-as"
-            export LD="arm-linux-androideabi-ld"
-            export RANLIB="arm-linux-androideabi-ranlib"
-            export NM="arm-linux-androideabi-nm"
-            export STRIP="arm-linux-androideabi-strip"
-
-            ./Configure android-arm no-ssl2 no-ssl3 no-comp no-hw no-engine no-shared no-tests no-ui no-deprecated zlib -Wl,--fix-cortex-a8 -fPIC -DANDROID -D__ANDROID_API__=16 -Os -fuse-ld="$ANDROID_TOOLCHAIN/bin/arm-linux-androideabi-ld" >> "$LOG_FILE" 2>&1 || fail "-> Error Configuring OpenSSL for $CURRENT_ARCH"
+        fail "-> $CURRENT_ARCH is currently unsupported"
         ;;
         arm64)
             export CC="aarch64-linux-android22-clang"
@@ -111,28 +102,10 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
             ./Configure android-arm64 no-ssl2 no-ssl3 no-comp no-hw no-engine no-shared no-tests no-ui no-deprecated no-zlib -fPIC -DANDROID -D__ANDROID_API__=22 -Os -fuse-ld="$ANDROID_TOOLCHAIN/bin/ld" -static >> "$LOG_FILE" 2>&1 || fail "-> Error Configuring OpenSSL for $CURRENT_ARCH"
         ;;
         x86)
-            export CC="i686-linux-android16-clang"
-            export CXX="i686-linux-android16-clang++"
-            export AR="i686-linux-android-ar"
-            export AS="i686-linux-android-as"
-            export LD="i686-linux-android-ld"
-            export RANLIB="i686-linux-android-ranlib"
-            export NM="i686-linux-android-nm"
-            export STRIP="i686-linux-android-strip"
-
-            ./Configure android-x86 no-ssl2 no-ssl3 no-comp no-hw no-engine no-shared no-tests no-ui no-deprecated zlib -mtune=intel -mssse3 -mfpmath=sse -m32 -fPIC -DANDROID -D__ANDROID_API__=16 -Os -fuse-ld="$ANDROID_TOOLCHAIN/bin/i686-linux-android-ld" >> "$LOG_FILE" 2>&1 || fail "-> Error Configuring OpenSSL for $CURRENT_ARCH"
+        fail "-> $CURRENT_ARCH is currently unsupported"
         ;;
         x86_64)
-            export CC="x86_64-linux-android21-clang"
-            export CXX="x86_64-linux-android21-clang++"
-            export AR="llvm-ar"
-            export AS="aarch64-linux-android-as"
-            export LD="mold"
-            export RANLIB="llvm-ranlib"
-            export NM="x86_64-linux-android-nm"
-            export STRIP="llvm-strip"
-
-            ./Configure android-x86_64 no-ssl2 no-ssl3 no-comp no-hw no-engine no-shared no-tests no-ui no-deprecated zlib -mtune=intel -mssse3 -mfpmath=sse -m64 -fPIC -DANDROID -D__ANDROID_API__=22 -Os -fuse-ld="$ANDROID_TOOLCHAIN/bin/x86_64-linux-android-ld" >> "$LOG_FILE" 2>&1 || fail "-> Error Configuring OpenSSL for $CURRENT_ARCH"
+        fail "-> $CURRENT_ARCH is currently unsupported"
         ;;
     esac
     # sed -i '' -e "s!-O3!-Os!g" "Makefile" || exit 1
@@ -192,21 +165,7 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
     echo "-> Configuring curl for $CURRENT_ARCH build..."
     case $CURRENT_ARCH in
         armv7)
-            export HOST="arm-linux-androideabi"
-
-            export CC="armv7a-linux-androideabi16-clang"
-            export CXX="armv7a-linux-androideabi16-clang++"
-            export AR="arm-linux-androideabi-ar"
-            export AS="arm-linux-androideabi-as"
-            export LD="arm-linux-androideabi-ld"
-            export RANLIB="arm-linux-androideabi-ranlib"
-            export NM="arm-linux-androideabi-nm"
-            export STRIP="arm-linux-androideabi-strip"
-
-            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -Wl,--fix-cortex-a8 -fPIC -DANDROID -D__ANDROID_API__=16 -Os"
-            export CPPFLAGS="$CFLAGS"
-            export CXXFLAGS="$CFLAGS -fno-exceptions -fno-rtti"
-            export LDFLAGS="-Wl,--fix-cortex-a8"
+        fail "-> $CURRENT_ARCH is currently unsupported"
         ;;
         arm64)
             export HOST="aarch64-linux-android"
@@ -226,38 +185,10 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
             export LDFLAGS="-static"
         ;;
         x86)
-            export HOST="i686-linux-android"
-
-            export CC="i686-linux-android16-clang"
-            export CXX="i686-linux-android16-clang++"
-            export AR="i686-linux-android-ar"
-            export AS="i686-linux-android-as"
-            export LD="i686-linux-android-ld"
-            export RANLIB="i686-linux-android-ranlib"
-            export NM="i686-linux-android-nm"
-            export STRIP="i686-linux-android-strip"
-
-            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -mtune=intel -mssse3 -mfpmath=sse -m32 -DANDROID -D__ANDROID_API__=16 -Os"
-            export CPPFLAGS="$CFLAGS"
-            export CXXFLAGS="$CFLAGS -fno-exceptions -fno-rtti"
-            export LDFLAGS=""
+        fail "-> $CURRENT_ARCH is currently unsupported"
         ;;
         x86_64)
-            export HOST="x86_64-linux-android"
-
-            export CC="x86_64-linux-android21-clang"
-            export CXX="x86_64-linux-android21-clang++"
-            export AR="x86_64-linux-android-ar"
-            export AS="x86_64-linux-android-as"
-            export LD="x86_64-linux-android-ld"
-            export RANLIB="x86_64-linux-android-ranlib"
-            export NM="x86_64-linux-android-nm"
-            export STRIP="x86_64-linux-android-strip"
-
-            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -mssse3 -mfpmath=sse -m64 -DANDROID -D__ANDROID_API__=22 -Os"
-            export CPPFLAGS="$CFLAGS"
-            export CXXFLAGS="$CFLAGS -fno-exceptions -fno-rtti"
-            export LDFLAGS=""
+        fail "-> $CURRENT_ARCH is currently unsupported"
         ;;
     esac
 
@@ -357,21 +288,7 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
     echo "-> Configuring GMP for $CURRENT_ARCH build..."
     case $CURRENT_ARCH in
         armv7)
-            export HOST="arm-linux-androideabi"
-
-            export CC="armv7a-linux-androideabi16-clang"
-            export CXX="armv7a-linux-androideabi16-clang++"
-            export AR="arm-linux-androideabi-ar"
-            export AS="arm-linux-androideabi-as"
-            export LD="arm-linux-androideabi-ld"
-            export RANLIB="arm-linux-androideabi-ranlib"
-            export NM="arm-linux-androideabi-nm"
-            export STRIP="arm-linux-androideabi-strip"
-
-            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -Wl,--fix-cortex-a8 -fPIC -DANDROID -D__ANDROID_API__=16 -Os"
-            export CPPFLAGS="$CFLAGS"
-            export CXXFLAGS="$CFLAGS -fno-exceptions -fno-rtti"
-            export LDFLAGS="-Wl,--fix-cortex-a8"
+        fail "-> $CURRENT_ARCH is currently unsupported"
         ;;
         arm64)
             export HOST="aarch64-linux-android"
@@ -392,38 +309,10 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
             ./configure --host=$HOST --enable-assembly=no --enable-static --enable-shared=no >> "$LOG_FILE" 2>&1 || fail "-> Error Configuring GMP for $CURRENT_ARCH"
         ;;
         x86)
-            export HOST="i686-linux-android"
-
-            export CC="i686-linux-android16-clang"
-            export CXX="i686-linux-android16-clang++"
-            export AR="i686-linux-android-ar"
-            export AS="i686-linux-android-as"
-            export LD="i686-linux-android-ld"
-            export RANLIB="i686-linux-android-ranlib"
-            export NM="i686-linux-android-nm"
-            export STRIP="i686-linux-android-strip"
-
-            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -mtune=intel -mssse3 -mfpmath=sse -m32 -DANDROID -D__ANDROID_API__=16 -Os"
-            export CPPFLAGS="$CFLAGS"
-            export CXXFLAGS="$CFLAGS -fno-exceptions -fno-rtti"
-            export LDFLAGS=""
+        fail "-> $CURRENT_ARCH is currently unsupported"
         ;;
         x86_64)
-            export HOST="x86_64-linux-android"
-
-            export CC="x86_64-linux-android21-clang"
-            export CXX="x86_64-linux-android21-clang++"
-            export AR="x86_64-linux-android-ar"
-            export AS="x86_64-linux-android-as"
-            export LD="x86_64-linux-android-ld"
-            export RANLIB="x86_64-linux-android-ranlib"
-            export NM="x86_64-linux-android-nm"
-            export STRIP="x86_64-linux-android-strip"
-
-            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -mtune=intel -mssse3 -mfpmath=sse -m64 -DANDROID -D__ANDROID_API__=22 -Os"
-            export CPPFLAGS="$CFLAGS"
-            export CXXFLAGS="$CFLAGS -fno-exceptions -fno-rtti"
-            export LDFLAGS=""
+        fail "-> $CURRENT_ARCH is currently unsupported"
         ;;
     esac
 
@@ -483,21 +372,7 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
     echo "-> Configuring MPFR for $CURRENT_ARCH build..."
     case $CURRENT_ARCH in
         armv7)
-            export HOST="arm-linux-androideabi"
-
-            export CC="armv7a-linux-androideabi16-clang"
-            export CXX="armv7a-linux-androideabi16-clang++"
-            export AR="arm-linux-androideabi-ar"
-            export AS="arm-linux-androideabi-as"
-            export LD="arm-linux-androideabi-ld"
-            export RANLIB="arm-linux-androideabi-ranlib"
-            export NM="arm-linux-androideabi-nm"
-            export STRIP="arm-linux-androideabi-strip"
-
-            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -Wl,--fix-cortex-a8 -fPIC -DANDROID -D__ANDROID_API__=16 -Os"
-            export CPPFLAGS="$CFLAGS"
-            export CXXFLAGS="$CFLAGS -fno-exceptions -fno-rtti"
-            export LDFLAGS="-Wl,--fix-cortex-a8"
+        fail "-> $CURRENT_ARCH is currently unsupported"
         ;;
         arm64)
             export HOST="aarch64-linux-android"
@@ -518,38 +393,10 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
             ./configure --host=$HOST --with-gmp="$ROOT_DIR/$BUILD_DIR_GMP/install/gmp/$CURRENT_ARCH/usr/local" >> "$LOG_FILE" 2>&1 || fail "-> Error Configuring GMP for $CURRENT_ARCH"
         ;;
         x86)
-            export HOST="i686-linux-android"
-
-            export CC="i686-linux-android16-clang"
-            export CXX="i686-linux-android16-clang++"
-            export AR="i686-linux-android-ar"
-            export AS="i686-linux-android-as"
-            export LD="i686-linux-android-ld"
-            export RANLIB="i686-linux-android-ranlib"
-            export NM="i686-linux-android-nm"
-            export STRIP="i686-linux-android-strip"
-
-            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -mtune=intel -mssse3 -mfpmath=sse -m32 -DANDROID -D__ANDROID_API__=16 -Os"
-            export CPPFLAGS="$CFLAGS"
-            export CXXFLAGS="$CFLAGS -fno-exceptions -fno-rtti"
-            export LDFLAGS=""
+        fail "-> $CURRENT_ARCH is currently unsupported"
         ;;
         x86_64)
-            export HOST="x86_64-linux-android"
-
-            export CC="x86_64-linux-android21-clang"
-            export CXX="x86_64-linux-android21-clang++"
-            export AR="x86_64-linux-android-ar"
-            export AS="x86_64-linux-android-as"
-            export LD="x86_64-linux-android-ld"
-            export RANLIB="x86_64-linux-android-ranlib"
-            export NM="x86_64-linux-android-nm"
-            export STRIP="x86_64-linux-android-strip"
-
-            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -mtune=intel -mssse3 -mfpmath=sse -m64 -DANDROID -D__ANDROID_API__=22 -Os"
-            export CPPFLAGS="$CFLAGS"
-            export CXXFLAGS="$CFLAGS -fno-exceptions -fno-rtti"
-            export LDFLAGS=""
+        fail "-> $CURRENT_ARCH is currently unsupported"
         ;;
     esac
 
@@ -609,21 +456,7 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
     echo "-> Configuring XZ for $CURRENT_ARCH build..."
     case $CURRENT_ARCH in
         armv7)
-            export HOST="arm-linux-androideabi"
-
-            export CC="armv7a-linux-androideabi16-clang"
-            export CXX="armv7a-linux-androideabi16-clang++"
-            export AR="arm-linux-androideabi-ar"
-            export AS="arm-linux-androideabi-as"
-            export LD="arm-linux-androideabi-ld"
-            export RANLIB="arm-linux-androideabi-ranlib"
-            export NM="arm-linux-androideabi-nm"
-            export STRIP="arm-linux-androideabi-strip"
-
-            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -Wl,--fix-cortex-a8 -fPIC -DANDROID -D__ANDROID_API__=16 -Os"
-            export CPPFLAGS="$CFLAGS"
-            export CXXFLAGS="$CFLAGS -fno-exceptions -fno-rtti"
-            export LDFLAGS="-Wl,--fix-cortex-a8"
+        fail "-> $CURRENT_ARCH is currently unsupported"
         ;;
         arm64)
             export HOST="aarch64-linux-android"
@@ -644,38 +477,10 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
             ./configure --host=$HOST >> "$LOG_FILE" 2>&1 || fail "-> Error Configuring XZ for $CURRENT_ARCH"
         ;;
         x86)
-            export HOST="i686-linux-android"
-
-            export CC="i686-linux-android16-clang"
-            export CXX="i686-linux-android16-clang++"
-            export AR="i686-linux-android-ar"
-            export AS="i686-linux-android-as"
-            export LD="i686-linux-android-ld"
-            export RANLIB="i686-linux-android-ranlib"
-            export NM="i686-linux-android-nm"
-            export STRIP="i686-linux-android-strip"
-
-            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -mtune=intel -mssse3 -mfpmath=sse -m32 -DANDROID -D__ANDROID_API__=16 -Os"
-            export CPPFLAGS="$CFLAGS"
-            export CXXFLAGS="$CFLAGS -fno-exceptions -fno-rtti"
-            export LDFLAGS=""
+        fail "-> $CURRENT_ARCH is currently unsupported"
         ;;
         x86_64)
-            export HOST="x86_64-linux-android"
-
-            export CC="x86_64-linux-android21-clang"
-            export CXX="x86_64-linux-android21-clang++"
-            export AR="x86_64-linux-android-ar"
-            export AS="x86_64-linux-android-as"
-            export LD="x86_64-linux-android-ld"
-            export RANLIB="x86_64-linux-android-ranlib"
-            export NM="x86_64-linux-android-nm"
-            export STRIP="x86_64-linux-android-strip"
-
-            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -mtune=intel -mssse3 -mfpmath=sse -m64 -DANDROID -D__ANDROID_API__=22 -Os"
-            export CPPFLAGS="$CFLAGS"
-            export CXXFLAGS="$CFLAGS -fno-exceptions -fno-rtti"
-            export LDFLAGS=""
+        fail "-> $CURRENT_ARCH is currently unsupported"
         ;;
     esac
 
@@ -735,21 +540,7 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
     echo "-> Configuring ICONV for $CURRENT_ARCH build..."
     case $CURRENT_ARCH in
         armv7)
-            export HOST="arm-linux-androideabi"
-
-            export CC="armv7a-linux-androideabi16-clang"
-            export CXX="armv7a-linux-androideabi16-clang++"
-            export AR="arm-linux-androideabi-ar"
-            export AS="arm-linux-androideabi-as"
-            export LD="arm-linux-androideabi-ld"
-            export RANLIB="arm-linux-androideabi-ranlib"
-            export NM="arm-linux-androideabi-nm"
-            export STRIP="arm-linux-androideabi-strip"
-
-            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -Wl,--fix-cortex-a8 -fPIC -DANDROID -D__ANDROID_API__=16 -Os"
-            export CPPFLAGS="$CFLAGS"
-            export CXXFLAGS="$CFLAGS -fno-exceptions -fno-rtti"
-            export LDFLAGS="-Wl,--fix-cortex-a8"
+        fail "-> $CURRENT_ARCH is currently unsupported"
         ;;
         arm64)
             export HOST="aarch64-linux-android"
@@ -770,38 +561,10 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
             ./configure --host=$HOST --enable-static --enable-shared=no >> "$LOG_FILE" 2>&1 || fail "-> Error Configuring ICONV for $CURRENT_ARCH"
         ;;
         x86)
-            export HOST="i686-linux-android"
-
-            export CC="i686-linux-android16-clang"
-            export CXX="i686-linux-android16-clang++"
-            export AR="i686-linux-android-ar"
-            export AS="i686-linux-android-as"
-            export LD="i686-linux-android-ld"
-            export RANLIB="i686-linux-android-ranlib"
-            export NM="i686-linux-android-nm"
-            export STRIP="i686-linux-android-strip"
-
-            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -mtune=intel -mssse3 -mfpmath=sse -m32 -DANDROID -D__ANDROID_API__=16 -Os"
-            export CPPFLAGS="$CFLAGS"
-            export CXXFLAGS="$CFLAGS -fno-exceptions -fno-rtti"
-            export LDFLAGS=""
+        fail "-> $CURRENT_ARCH is currently unsupported"
         ;;
         x86_64)
-            export HOST="x86_64-linux-android"
-
-            export CC="x86_64-linux-android21-clang"
-            export CXX="x86_64-linux-android21-clang++"
-            export AR="x86_64-linux-android-ar"
-            export AS="x86_64-linux-android-as"
-            export LD="x86_64-linux-android-ld"
-            export RANLIB="x86_64-linux-android-ranlib"
-            export NM="x86_64-linux-android-nm"
-            export STRIP="x86_64-linux-android-strip"
-
-            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -mtune=intel -mssse3 -mfpmath=sse -m64 -DANDROID -D__ANDROID_API__=22 -Os"
-            export CPPFLAGS="$CFLAGS"
-            export CXXFLAGS="$CFLAGS -fno-exceptions -fno-rtti"
-            export LDFLAGS=""
+        fail "-> $CURRENT_ARCH is currently unsupported"
         ;;
     esac
 
@@ -862,21 +625,7 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
     echo "-> Configuring XML2 for $CURRENT_ARCH build..."
     case $CURRENT_ARCH in
         armv7)
-            export HOST="arm-linux-androideabi"
-
-            export CC="armv7a-linux-androideabi16-clang"
-            export CXX="armv7a-linux-androideabi16-clang++"
-            export AR="arm-linux-androideabi-ar"
-            export AS="arm-linux-androideabi-as"
-            export LD="arm-linux-androideabi-ld"
-            export RANLIB="arm-linux-androideabi-ranlib"
-            export NM="arm-linux-androideabi-nm"
-            export STRIP="arm-linux-androideabi-strip"
-
-            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -Wl,--fix-cortex-a8 -fPIC -DANDROID -D__ANDROID_API__=16 -Os"
-            export CPPFLAGS="$CFLAGS"
-            export CXXFLAGS="$CFLAGS -fno-exceptions -fno-rtti"
-            export LDFLAGS="-Wl,--fix-cortex-a8"
+            fail "-> $CURRENT_ARCH is currently unsupported"
         ;;
         arm64)
             export HOST="aarch64-linux-android"
@@ -897,38 +646,10 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
             ./configure --host=$HOST --enable-static --disable-shared --without-python --with-iconv="$ROOT_DIR/$BUILD_DIR_ICONV/install/iconv/arm64/usr/local/lib/libiconv.a" --with-lzma="$ROOT_DIR/$BUILD_DIR_XZ/install/xz/$CURRENT_ARCH/usr/local/lib/liblzma.a" >> "$LOG_FILE" 2>&1 || fail "-> Error Configuring XML2 for $CURRENT_ARCH"
         ;;
         x86)
-            export HOST="i686-linux-android"
-
-            export CC="i686-linux-android16-clang"
-            export CXX="i686-linux-android16-clang++"
-            export AR="i686-linux-android-ar"
-            export AS="i686-linux-android-as"
-            export LD="i686-linux-android-ld"
-            export RANLIB="i686-linux-android-ranlib"
-            export NM="i686-linux-android-nm"
-            export STRIP="i686-linux-android-strip"
-
-            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -mtune=intel -mssse3 -mfpmath=sse -m32 -DANDROID -D__ANDROID_API__=16 -Os"
-            export CPPFLAGS="$CFLAGS"
-            export CXXFLAGS="$CFLAGS -fno-exceptions -fno-rtti"
-            export LDFLAGS=""
+            fail "-> $CURRENT_ARCH is currently unsupported"
         ;;
         x86_64)
-            export HOST="x86_64-linux-android"
-
-            export CC="x86_64-linux-android21-clang"
-            export CXX="x86_64-linux-android21-clang++"
-            export AR="x86_64-linux-android-ar"
-            export AS="x86_64-linux-android-as"
-            export LD="x86_64-linux-android-ld"
-            export RANLIB="x86_64-linux-android-ranlib"
-            export NM="x86_64-linux-android-nm"
-            export STRIP="x86_64-linux-android-strip"
-
-            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -mtune=intel -mssse3 -mfpmath=sse -m64 -DANDROID -D__ANDROID_API__=22 -Os"
-            export CPPFLAGS="$CFLAGS"
-            export CXXFLAGS="$CFLAGS -fno-exceptions -fno-rtti"
-            export LDFLAGS=""
+            fail "-> $CURRENT_ARCH is currently unsupported"
         ;;
     esac
 
@@ -989,21 +710,7 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
     patch -u $ROOT_DIR/$BUILD_DIR_QALCULATE/src/libqalculate-$QALCULATE_VERSION/libqalculate/util.cc -i $ROOT_DIR/pthread.patch >> "$LOG_FILE" 2>&1 || fail "-> Error Patching QALCULATE for $CURRENT_ARCH"
     case $CURRENT_ARCH in
         armv7)
-            export HOST="arm-linux-androideabi"
-
-            export CC="armv7a-linux-androideabi16-clang"
-            export CXX="armv7a-linux-androideabi16-clang++"
-            export AR="arm-linux-androideabi-ar"
-            export AS="arm-linux-androideabi-as"
-            export LD="arm-linux-androideabi-ld"
-            export RANLIB="arm-linux-androideabi-ranlib"
-            export NM="arm-linux-androideabi-nm"
-            export STRIP="arm-linux-androideabi-strip"
-
-            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -Wl,--fix-cortex-a8 -fPIC -DANDROID -D__ANDROID_API__=16 -Os"
-            export CPPFLAGS="$CFLAGS"
-            export CXXFLAGS="$CFLAGS -fno-exceptions -fno-rtti"
-            export LDFLAGS="-Wl,--fix-cortex-a8"
+            fail "-> $CURRENT_ARCH is currently unsupported"
         ;;
         arm64)
             export PKG_CONFIG_PATH="$ROOT_DIR/$BUILD_DIR_XML2/install/xml2/arm64/usr/local/lib/pkgconfig:$ROOT_DIR/$BUILD_DIR_CURL/install/curl/arm64/lib/pkgconfig"
@@ -1025,38 +732,10 @@ for CURRENT_ARCH in "${TARGET_ARCHS[@]}"; do
             ./autogen.sh --host=$HOST --enable-static --disable-shared --without-icu --without-libintl-prefix --enable-compiled-definitions >> "$LOG_FILE" 2>&1 || fail "-> Error Configuring QALCULATE for $CURRENT_ARCH"
         ;;
         x86)
-            export HOST="i686-linux-android"
-
-            export CC="i686-linux-android16-clang"
-            export CXX="i686-linux-android16-clang++"
-            export AR="i686-linux-android-ar"
-            export AS="i686-linux-android-as"
-            export LD="i686-linux-android-ld"
-            export RANLIB="i686-linux-android-ranlib"
-            export NM="i686-linux-android-nm"
-            export STRIP="i686-linux-android-strip"
-
-            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -mtune=intel -mssse3 -mfpmath=sse -m32 -DANDROID -D__ANDROID_API__=16 -Os"
-            export CPPFLAGS="$CFLAGS"
-            export CXXFLAGS="$CFLAGS -fno-exceptions -fno-rtti"
-            export LDFLAGS=""
+            fail "-> $CURRENT_ARCH is currently unsupported"
         ;;
         x86_64)
-            export HOST="x86_64-linux-android"
-
-            export CC="x86_64-linux-android21-clang"
-            export CXX="x86_64-linux-android21-clang++"
-            export AR="x86_64-linux-android-ar"
-            export AS="x86_64-linux-android-as"
-            export LD="x86_64-linux-android-ld"
-            export RANLIB="x86_64-linux-android-ranlib"
-            export NM="x86_64-linux-android-nm"
-            export STRIP="x86_64-linux-android-strip"
-
-            export CFLAGS="--sysroot=$ANDROID_TOOLCHAIN/sysroot -fPIC -mtune=intel -mssse3 -mfpmath=sse -m64 -DANDROID -D__ANDROID_API__=22 -Os"
-            export CPPFLAGS="$CFLAGS"
-            export CXXFLAGS="$CFLAGS -fno-exceptions -fno-rtti"
-            export LDFLAGS=""
+            fail "-> $CURRENT_ARCH is currently unsupported"
         ;;
     esac
 
